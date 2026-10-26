@@ -1,0 +1,23 @@
+# Toy 2-Job 2-TimeSlot Scheduling Problem
+# Goal: Assign tasks to time slots to minimize completion time and prevent machine collisions.
+
+PROBLEM: ToyScheduling
+
+VARIABLES:
+    # x[0]: Job 1 Task 1 starts at t=0
+    # x[1]: Job 1 Task 1 starts at t=1
+    # x[2]: Job 2 Task 1 starts at t=0
+    # x[3]: Job 2 Task 1 starts at t=1
+    binary x[4]
+
+OBJECTIVE:
+    # Minimize the completion times: early finish preferred
+    MINIMIZE 1*x[0] + 2*x[1] + 1*x[2] + 2*x[3]
+
+CONSTRAINTS:
+    # Each task must be scheduled exactly once
+    job1_assigned: x[0] + x[1] == 1
+    job2_assigned: x[2] + x[3] == 1
+
+    # Machine 1 cannot process both tasks at time t=0 simultaneously
+    no_overlap_t0: x[0] + x[2] <= 1
