@@ -1,0 +1,26 @@
+# 3-Job 3-TimeSlot Flexible Scheduling Problem (Job Shop Archetype)
+# Goal: Assign 3 tasks to 3 discrete time slots (t=0, t=1, t=2)
+# minimizing makespan / finish time while respecting single-capacity machine limits.
+
+PROBLEM: JobShop3x3
+
+VARIABLES:
+    # x[0..2]: Job 1 starts at t=0, 1, 2
+    # x[3..5]: Job 2 starts at t=0, 1, 2
+    # x[6..8]: Job 3 starts at t=0, 1, 2
+    binary x[9]
+
+OBJECTIVE:
+    # Favor earlier completion times: weight = t + 1
+    MINIMIZE 1*x[0] + 2*x[1] + 3*x[2] + 1*x[3] + 2*x[4] + 3*x[5] + 1*x[6] + 2*x[7] + 3*x[8]
+
+CONSTRAINTS:
+    # 1. Exactly one time slot assigned per job (One-Hot assignment)
+    job1_assigned: x[0] + x[1] + x[2] == 1
+    job2_assigned: x[3] + x[4] + x[5] == 1
+    job3_assigned: x[6] + x[7] + x[8] == 1
+
+    # 2. Machine capacity constraint: Shared resource cannot run more than 1 job per time slot
+    slot0_capacity: x[0] + x[3] + x[6] <= 1
+    slot1_capacity: x[1] + x[4] + x[7] <= 1
+    slot2_capacity: x[2] + x[5] + x[8] <= 1

@@ -1,0 +1,89 @@
+# Dense Max-Cut on a 14-Node Graph (High Edge Density ~70%)
+#
+# WHY THIS IS BETTER FOR QUANTUM-INSPIRED SOLVERS:
+#   - Pure unconstrained QUBO (no slack variables, no penalty tuning)
+#   - 14 nodes with ~60 edges = highly connected Ising-type landscape
+#   - Many local minima -> SA/SBM/SQA explore the landscape better
+#   - CP-SAT must branch-and-bound over 2^14 = 16,384 states
+#   - SA/SBM traverse the energy landscape in parallel shots
+#
+# Graph: near-complete random graph with ~70% edge probability.
+# Variables: x[i] in {0,1} = partition assignment for node i
+# QUBO: For each edge (i,j): x[i] + x[j] - 2*x[i]*x[j]  (1 if cut, 0 if not)
+# MAXIMIZE total cut edges.
+
+PROBLEM: DenseMaxCut14Nodes
+
+VARIABLES:
+    binary x[14]
+
+OBJECTIVE:
+    MAXIMIZE
+        x[0]  + x[1]  - 2*x[0]*x[1]
+      + x[0]  + x[2]  - 2*x[0]*x[2]
+      + x[0]  + x[3]  - 2*x[0]*x[3]
+      + x[0]  + x[5]  - 2*x[0]*x[5]
+      + x[0]  + x[6]  - 2*x[0]*x[6]
+      + x[0]  + x[7]  - 2*x[0]*x[7]
+      + x[0]  + x[9]  - 2*x[0]*x[9]
+      + x[0]  + x[11] - 2*x[0]*x[11]
+      + x[0]  + x[12] - 2*x[0]*x[12]
+      + x[1]  + x[2]  - 2*x[1]*x[2]
+      + x[1]  + x[4]  - 2*x[1]*x[4]
+      + x[1]  + x[5]  - 2*x[1]*x[5]
+      + x[1]  + x[6]  - 2*x[1]*x[6]
+      + x[1]  + x[8]  - 2*x[1]*x[8]
+      + x[1]  + x[9]  - 2*x[1]*x[9]
+      + x[1]  + x[10] - 2*x[1]*x[10]
+      + x[1]  + x[13] - 2*x[1]*x[13]
+      + x[2]  + x[3]  - 2*x[2]*x[3]
+      + x[2]  + x[4]  - 2*x[2]*x[4]
+      + x[2]  + x[6]  - 2*x[2]*x[6]
+      + x[2]  + x[7]  - 2*x[2]*x[7]
+      + x[2]  + x[8]  - 2*x[2]*x[8]
+      + x[2]  + x[10] - 2*x[2]*x[10]
+      + x[2]  + x[11] - 2*x[2]*x[11]
+      + x[2]  + x[13] - 2*x[2]*x[13]
+      + x[3]  + x[4]  - 2*x[3]*x[4]
+      + x[3]  + x[5]  - 2*x[3]*x[5]
+      + x[3]  + x[7]  - 2*x[3]*x[7]
+      + x[3]  + x[8]  - 2*x[3]*x[8]
+      + x[3]  + x[9]  - 2*x[3]*x[9]
+      + x[3]  + x[11] - 2*x[3]*x[11]
+      + x[3]  + x[12] - 2*x[3]*x[12]
+      + x[3]  + x[13] - 2*x[3]*x[13]
+      + x[4]  + x[6]  - 2*x[4]*x[6]
+      + x[4]  + x[7]  - 2*x[4]*x[7]
+      + x[4]  + x[9]  - 2*x[4]*x[9]
+      + x[4]  + x[10] - 2*x[4]*x[10]
+      + x[4]  + x[11] - 2*x[4]*x[11]
+      + x[4]  + x[12] - 2*x[4]*x[12]
+      + x[5]  + x[6]  - 2*x[5]*x[6]
+      + x[5]  + x[8]  - 2*x[5]*x[8]
+      + x[5]  + x[10] - 2*x[5]*x[10]
+      + x[5]  + x[12] - 2*x[5]*x[12]
+      + x[5]  + x[13] - 2*x[5]*x[13]
+      + x[6]  + x[8]  - 2*x[6]*x[8]
+      + x[6]  + x[9]  - 2*x[6]*x[9]
+      + x[6]  + x[11] - 2*x[6]*x[11]
+      + x[6]  + x[12] - 2*x[6]*x[12]
+      + x[6]  + x[13] - 2*x[6]*x[13]
+      + x[7]  + x[8]  - 2*x[7]*x[8]
+      + x[7]  + x[9]  - 2*x[7]*x[9]
+      + x[7]  + x[10] - 2*x[7]*x[10]
+      + x[7]  + x[12] - 2*x[7]*x[12]
+      + x[7]  + x[13] - 2*x[7]*x[13]
+      + x[8]  + x[10] - 2*x[8]*x[10]
+      + x[8]  + x[11] - 2*x[8]*x[11]
+      + x[8]  + x[12] - 2*x[8]*x[12]
+      + x[8]  + x[13] - 2*x[8]*x[13]
+      + x[9]  + x[10] - 2*x[9]*x[10]
+      + x[9]  + x[12] - 2*x[9]*x[12]
+      + x[9]  + x[13] - 2*x[9]*x[13]
+      + x[10] + x[11] - 2*x[10]*x[11]
+      + x[10] + x[13] - 2*x[10]*x[13]
+      + x[11] + x[12] - 2*x[11]*x[12]
+      + x[11] + x[13] - 2*x[11]*x[13]
+      + x[12] + x[13] - 2*x[12]*x[13]
+
+# No constraints: pure unconstrained QUBO (ideal for SA/SBM/SQA)

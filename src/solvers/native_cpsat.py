@@ -21,6 +21,10 @@ from src.dsl.ast_nodes import (
 )
 
 
+from src.dsl.checker import check_solution_feasibility
+from .base import BaseQUBOSolver, SolverResult
+
+
 @dataclass
 class NativeCPSATResult:
     """Result of solving a native model with CP-SAT."""
@@ -31,6 +35,28 @@ class NativeCPSATResult:
     wall_time: float
     assignment: Dict[str, float] = field(default_factory=dict)
     solver_stats: str = ""
+
+    def to_solver_result(self, problem: Optional[OptimizationProblem] = None) -> SolverResult:
+        """Converts native result to standardized SolverResult."""
+        violations = 0
+        max_viol = 0.0
+        if problem and self.assignment:
+            feas = check_solution_feasibility(problem, self.assignment)
+            violations = feas.num_violations
+            max_viol = feas.max_violation
+
+        return SolverResult(
+            solver_name="NativeCP-SAT",
+            status=self.status,
+            is_feasible=self.is_feasible,
+            objective_value=self.objective_value,
+            qubo_energy=None,
+            wall_time=self.wall_time,
+            assignment=self.assignment,
+            num_violations=violations,
+            max_violation=max_viol,
+            solver_info={"best_bound": self.best_bound, "stats": self.solver_stats},
+        )
 
 
 class NativeCPSATSolver:
@@ -191,3 +217,26 @@ class NativeCPSATSolver:
 
         has_fraction = any(not float(c).is_integer() for c in all_coeffs if abs(c) > 1e-9)
         return self.precision_scale if has_fraction else 1
+
+
+class CPSATUnifiedSolver(BaseQUBOSolver):
+    """
+    Adapter exposing NativeCPSATSolver under the BaseQUBOSolver unified interface.
+    """
+
+    def __init__(self, precision_scale: int = 1000):
+        super().__init__(name="NativeCP-SAT")
+        self.underlying_solver = NativeCPSATSolver(precision_scale=precision_scale)
+
+    def solve(
+        self,
+        problem: OptimizationProblem,
+        compiled_qubo: Optional[Any] = None,
+        time_limit_sec: Optional[float] = None,
+        random_seed: int = 42,
+        **kwargs,
+    ) -> SolverResult:
+        res = self.underlying_solver.solve(
+            problem, time_limit_sec=time_limit_sec, random_seed=random_seed
+        )
+        return res.to_solver_result(problem=problem)

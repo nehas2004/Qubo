@@ -1,0 +1,23 @@
+# Knapsack Problem - 8 Items
+# A thief can carry 50kg. Which items maximize value?
+#
+# Items:
+#   x[0]: Laptop       weight=10  value=18
+#   x[1]: Camera       weight=4   value=12
+#   x[2]: Phone        weight=3   value=10
+#   x[3]: Watch        weight=1   value=7
+#   x[4]: Tablet       weight=9   value=15
+#   x[5]: Headphones   weight=2   value=8
+#   x[6]: Speaker      weight=8   value=11
+#   x[7]: Charger      weight=2   value=5
+
+PROBLEM: Knapsack8Items
+
+VARIABLES:
+    binary x[8]
+
+OBJECTIVE:
+    MAXIMIZE 18*x[0] + 12*x[1] + 10*x[2] + 7*x[3] + 15*x[4] + 8*x[5] + 11*x[6] + 5*x[7]
+
+CONSTRAINTS:
+    weight_limit: 10*x[0] + 4*x[1] + 3*x[2] + 1*x[3] + 9*x[4] + 2*x[5] + 8*x[6] + 2*x[7] <= 20

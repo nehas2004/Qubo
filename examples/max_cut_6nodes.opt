@@ -1,0 +1,30 @@
+# Max-Cut Problem on a 6-Node Graph
+#
+# Partition 6 nodes into two groups (x[i]=0 or x[i]=1) to
+# maximize the number of edges crossing the partition (cut edges).
+#
+# Graph edges (all weight=1):
+#   0-1, 0-2, 1-3, 2-3, 2-4, 3-5, 4-5
+#
+# QUBO formulation:
+#   For each edge (i,j): contributes  x[i] + x[j] - 2*x[i]*x[j]
+#   = 1 when nodes are in different partitions (cut), 0 otherwise.
+#
+# Max cut = 5 (optimal partition: {0,3,4} vs {1,2,5})
+
+PROBLEM: MaxCut6Nodes
+
+VARIABLES:
+    binary x[6]
+
+OBJECTIVE:
+    MAXIMIZE
+        x[0] + x[1] - 2*x[0]*x[1]
+      + x[0] + x[2] - 2*x[0]*x[2]
+      + x[1] + x[3] - 2*x[1]*x[3]
+      + x[2] + x[3] - 2*x[2]*x[3]
+      + x[2] + x[4] - 2*x[2]*x[4]
+      + x[3] + x[5] - 2*x[3]*x[5]
+      + x[4] + x[5] - 2*x[4]*x[5]
+
+# No constraints: pure unconstrained QUBO

@@ -1,0 +1,72 @@
+{
+  "label_names": [
+    "cpsat",
+    "sa",
+    "sbm"
+  ],
+  "feature_names": [
+    "a_num_vars",
+    "a_num_linear_nonzero",
+    "a_num_quadratic_nonzero",
+    "a_mean_linear",
+    "a_var_linear",
+    "a_mean_quadratic",
+    "a_var_quadratic",
+    "a_mean_all",
+    "a_var_all",
+    "b_num_orig_vars",
+    "b_num_slack_vars",
+    "b_total_vars",
+    "b_slack_ratio",
+    "b_num_constraints",
+    "b_num_eq_constraints",
+    "b_num_ineq_constraints",
+    "b_constraints_per_var",
+    "b_penalty_multiplier",
+    "b_penalty_to_obj_max_ratio",
+    "b_penalty_to_obj_mean_ratio",
+    "b_graph_density_native",
+    "b_graph_density_qubo",
+    "b_graph_mean_degree",
+    "b_graph_max_degree"
+  ],
+  "label_to_int": {
+    "cpsat": 0,
+    "sa": 1,
+    "sbm": 2
+  },
+  "int_to_label": {
+    "0": "cpsat",
+    "1": "sa",
+    "2": "sbm"
+  },
+  "test_accuracy": 0.8875,
+  "cv_accuracy_mean": 0.8775297619047618,
+  "cv_accuracy_std": 0.02632167116445868,
+  "feature_importances": {
+    "a_num_vars": 0.011307045817375183,
+    "a_num_linear_nonzero": 0.010059733875095844,
+    "a_num_quadratic_nonzero": 0.01738760620355606,
+    "a_mean_linear": 0.011207601986825466,
+    "a_var_linear": 0.0,
+    "a_mean_quadratic": 0.01408986747264862,
+    "a_var_quadratic": 0.28093433380126953,
+    "a_mean_all": 0.011791571043431759,
+    "a_var_all": 0.0851835384964943,
+    "b_num_orig_vars": 0.008614031597971916,
+    "b_num_slack_vars": 0.17821760475635529,
+    "b_total_vars": 0.008460449054837227,
+    "b_slack_ratio": 0.009499059058725834,
+    "b_num_constraints": 0.1668013334274292,
+    "b_num_eq_constraints": 0.01567603275179863,
+    "b_num_ineq_constraints": 0.016086110845208168,
+    "b_constraints_per_var": 0.04999077692627907,
+    "b_penalty_multiplier": 0.009830599650740623,
+    "b_penalty_to_obj_max_ratio": 0.015244840644299984,
+    "b_penalty_to_obj_mean_ratio": 0.03451915085315704,
+    "b_graph_density_native": 0.011973865330219269,
+    "b_graph_density_qubo": 0.010681593790650368,
+    "b_graph_mean_degree": 0.012305418960750103,
+    "b_graph_max_degree": 0.010137790814042091
+  }
+}

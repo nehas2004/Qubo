@@ -1,0 +1,61 @@
+# Graph 3-Coloring Problem
+#
+# Color 5 nodes of a graph with 3 colors {Red=0, Green=1, Blue=2}
+# such that no two adjacent nodes share the same color.
+#
+# Graph edges: 0-1, 0-2, 1-2, 1-3, 2-4, 3-4
+# (Triangle 0-1-2 is fully connected, plus 3 and 4 extending)
+#
+# Variables: x[v*3 + c] = 1 if vertex v has color c
+#   Vertex 0: x[0]=Red, x[1]=Green, x[2]=Blue
+#   Vertex 1: x[3]=Red, x[4]=Green, x[5]=Blue
+#   Vertex 2: x[6]=Red, x[7]=Green, x[8]=Blue
+#   Vertex 3: x[9]=Red, x[10]=Green, x[11]=Blue
+#   Vertex 4: x[12]=Red, x[13]=Green, x[14]=Blue
+
+PROBLEM: GraphColor5Nodes3Colors
+
+VARIABLES:
+    binary x[15]
+
+OBJECTIVE:
+    # Feasibility objective: minimize total assignments (always = 5 at optimum)
+    MINIMIZE x[0]+x[1]+x[2]+x[3]+x[4]+x[5]+x[6]+x[7]+x[8]+x[9]+x[10]+x[11]+x[12]+x[13]+x[14]
+
+CONSTRAINTS:
+    # One-hot: each vertex gets exactly one color
+    v0_color: x[0]  + x[1]  + x[2]  == 1
+    v1_color: x[3]  + x[4]  + x[5]  == 1
+    v2_color: x[6]  + x[7]  + x[8]  == 1
+    v3_color: x[9]  + x[10] + x[11] == 1
+    v4_color: x[12] + x[13] + x[14] == 1
+
+    # Edge 0-1: no shared color
+    e01_red:   x[0] + x[3] <= 1
+    e01_green: x[1] + x[4] <= 1
+    e01_blue:  x[2] + x[5] <= 1
+
+    # Edge 0-2: no shared color
+    e02_red:   x[0] + x[6] <= 1
+    e02_green: x[1] + x[7] <= 1
+    e02_blue:  x[2] + x[8] <= 1
+
+    # Edge 1-2: no shared color
+    e12_red:   x[3] + x[6] <= 1
+    e12_green: x[4] + x[7] <= 1
+    e12_blue:  x[5] + x[8] <= 1
+
+    # Edge 1-3: no shared color
+    e13_red:   x[3] + x[9]  <= 1
+    e13_green: x[4] + x[10] <= 1
+    e13_blue:  x[5] + x[11] <= 1
+
+    # Edge 2-4: no shared color
+    e24_red:   x[6]  + x[12] <= 1
+    e24_green: x[7]  + x[13] <= 1
+    e24_blue:  x[8]  + x[14] <= 1
+
+    # Edge 3-4: no shared color
+    e34_red:   x[9]  + x[12] <= 1
+    e34_green: x[10] + x[13] <= 1
+    e34_blue:  x[11] + x[14] <= 1

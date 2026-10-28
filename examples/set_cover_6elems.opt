@@ -1,0 +1,41 @@
+# Set Cover Problem
+#
+# 6 elements {A, B, C, D, E, F} must ALL be covered.
+# Choose the minimum-cost subset of 5 available sets.
+#
+# Sets and their coverage:
+#   S0 (cost=3): covers A, B, C
+#   S1 (cost=5): covers B, D, E
+#   S2 (cost=2): covers C, F
+#   S3 (cost=4): covers A, D, F
+#   S4 (cost=1): covers E, F
+#
+# Variables: x[i] = 1 if set Si is selected
+# Optimal: S0 + S1 + S2 (cost=10) or S0 + S3 + S4 (cost=8)
+
+PROBLEM: SetCover6Elements
+
+VARIABLES:
+    binary x[5]
+
+OBJECTIVE:
+    MINIMIZE 3*x[0] + 5*x[1] + 2*x[2] + 4*x[3] + 1*x[4]
+
+CONSTRAINTS:
+    # Element A covered by S0, S3
+    cover_A: x[0] + x[3] >= 1
+
+    # Element B covered by S0, S1
+    cover_B: x[0] + x[1] >= 1
+
+    # Element C covered by S0, S2
+    cover_C: x[0] + x[2] >= 1
+
+    # Element D covered by S1, S3
+    cover_D: x[1] + x[3] >= 1
+
+    # Element E covered by S1, S4
+    cover_E: x[1] + x[4] >= 1
+
+    # Element F covered by S2, S3, S4
+    cover_F: x[2] + x[3] + x[4] >= 1
